@@ -1,0 +1,30 @@
+# ==============================================================================
+# Base Docker Compose – shared service definitions.
+# Use the environment-specific overrides:
+#   DEV:  docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#   UAT:  docker compose -f docker-compose.yml -f docker-compose.uat.yml up
+#   PROD: docker compose -f docker-compose.yml -f docker-compose.prod.yml up
+# ==============================================================================
+
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  auth-service:
+    build: .
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

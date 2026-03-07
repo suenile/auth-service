@@ -1,0 +1,7 @@
+# UAT: 2 replicas to mirror near-production availability
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 2

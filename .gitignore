@@ -1,0 +1,22 @@
+*.class
+*.jar
+*.war
+target/
+.mvn/
+!.mvn/wrapper/
+logs/
+*.log
+keystore.p12
+*.p12
+*.jks
+
+# Environment files with real credentials – keep only the .example templates
+.env
+.env.dev
+.env.uat
+.env.prod
+
+# Keep example templates
+!.env.dev.example
+!.env.uat.example
+!.env.prod.example

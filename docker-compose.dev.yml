@@ -1,0 +1,26 @@
+# DEV overlay
+# Runs on plain HTTP (port 8080), verbose SQL, 1 replica, hot-reload-friendly.
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+
+version: "3.9"
+
+services:
+  postgres:
+    environment:
+      POSTGRES_DB: authdb_dev
+      POSTGRES_USER: authuser
+      POSTGRES_PASSWORD: devpass
+    ports:
+      - "5432:5432"
+
+  auth-service:
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/authdb_dev
+      DB_USER: authuser
+      DB_PASSWORD: devpass
+      JWT_PRIVATE_KEY: ${JWT_PRIVATE_KEY}
+      JWT_PUBLIC_KEY: ${JWT_PUBLIC_KEY}
+      CORS_ALLOWED_ORIGINS: "http://localhost:3000,http://localhost:4200"

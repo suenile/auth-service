@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;NON_KEYWORDS=VALUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.H2Dialect
+    show-sql: false
+  flyway:
+    enabled: false
+  mail:
+    host: localhost
+    port: 1025
+
+# JWT keys are injected at runtime via @DynamicPropertySource in integration tests.
+# The placeholders below are overridden before the context starts.
+jwt:
+  private-key: "PLACEHOLDER"
+  public-key: "PLACEHOLDER"
+  access-token-expiration: 900
+  refresh-token-expiration: 604800
+  issuer: auth-service-test
+
+security:
+  cors:
+    allowed-origins: "http://localhost:3000"
+  rate-limit:
+    capacity: 1000
+    refill-tokens: 1000
+    refill-duration-seconds: 1
+  account-lockout:
+    max-attempts: 5
+    lockout-duration-minutes: 15
+
+server:
+  ssl:
+    enabled: false
+  port: 0   # random port in tests
+
+logging:
+  level:
+    root: WARN
+    com.authservice: INFO

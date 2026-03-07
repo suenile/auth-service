@@ -1,0 +1,7 @@
+# PROD: 3 replicas as baseline; HPA scales up to 10
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 3

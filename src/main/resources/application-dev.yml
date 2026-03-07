@@ -1,0 +1,59 @@
+# ==============================================================================
+# DEV profile
+# Usage: SPRING_PROFILES_ACTIVE=dev  (default)
+# Intended for local developer machines.
+# TLS is disabled so plain HTTP works; schema is auto-created/updated.
+# Verbose SQL + DEBUG logging to aid development.
+# ==============================================================================
+
+server:
+  port: 8080
+  ssl:
+    enabled: false
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/authdb_dev}
+    username: ${DB_USER:authuser}
+    password: ${DB_PASSWORD:authpass}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+
+  jpa:
+    hibernate:
+      ddl-auto: update          # auto-update schema in dev
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # H2 console available at http://localhost:8080/h2-console (if using H2)
+  devtools:
+    restart:
+      enabled: true
+
+jwt:
+  issuer: auth-service-dev
+  access-token-expiration: 3600   # 1 hour – easier to test
+
+security:
+  rate-limit:
+    capacity: 1000               # very permissive in dev
+    refill-tokens: 1000
+    refill-duration-seconds: 60
+  cors:
+    allowed-origins: "http://localhost:3000,http://localhost:4200"
+
+management:
+  endpoint:
+    health:
+      show-details: always       # always show in dev
+
+logging:
+  level:
+    root: INFO
+    com.authservice: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql: TRACE

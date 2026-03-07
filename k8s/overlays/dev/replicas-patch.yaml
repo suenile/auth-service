@@ -1,0 +1,7 @@
+# DEV: 1 replica to save resources
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service
+spec:
+  replicas: 1

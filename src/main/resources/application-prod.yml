@@ -1,0 +1,66 @@
+# ==============================================================================
+# PROD profile
+# Usage: SPRING_PROFILES_ACTIVE=prod
+# Live production environment.
+# TLS enforced; schema strictly validated; structured JSON logging.
+# All secrets MUST be injected via environment variables / Kubernetes Secrets.
+# Connection pool tuned for production load.
+# ==============================================================================
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    key-store: classpath:keystore.p12
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    key-store-type: PKCS12
+    key-alias: auth-service
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 300000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+
+jwt:
+  issuer: auth-service
+  access-token-expiration: 900    # 15 minutes
+  refresh-token-expiration: 604800 # 7 days
+
+security:
+  rate-limit:
+    capacity: 10
+    refill-tokens: 10
+    refill-duration-seconds: 60
+  account-lockout:
+    max-attempts: 5
+    lockout-duration-minutes: 15
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus   # minimal exposure in prod
+  endpoint:
+    health:
+      show-details: never
+
+logging:
+  level:
+    root: WARN
+    com.authservice: INFO
