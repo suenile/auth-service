@@ -1,17 +1,5 @@
 package com.authservice.service;
 
-import com.authservice.entity.TokenBlacklist;
-import com.authservice.entity.User;
-import com.authservice.repository.TokenBlacklistRepository;
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -23,10 +11,26 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.authservice.entity.TokenBlacklist;
+import com.authservice.entity.User;
+import com.authservice.repository.TokenBlacklistRepository;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.Jwts;
+import jakarta.annotation.PostConstruct;
+
 @Service
-@RequiredArgsConstructor
 public class JwtService {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
+    private final TokenBlacklistRepository tokenBlacklistRepository;
 
     @Value("${jwt.private-key}")
     private String privateKeyPem;
@@ -43,7 +47,9 @@ public class JwtService {
     private PrivateKey privateKey;
     private PublicKey publicKey;
 
-    private final TokenBlacklistRepository tokenBlacklistRepository;
+    public JwtService(TokenBlacklistRepository tokenBlacklistRepository) {
+        this.tokenBlacklistRepository = tokenBlacklistRepository;
+    }
 
     @PostConstruct
     public void initKeys() throws Exception {

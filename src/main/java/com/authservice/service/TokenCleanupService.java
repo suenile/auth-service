@@ -2,21 +2,26 @@ package com.authservice.service;
 
 import com.authservice.repository.RefreshTokenRepository;
 import com.authservice.repository.TokenBlacklistRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class TokenCleanupService {
 
+    private static final Logger log = LoggerFactory.getLogger(TokenCleanupService.class);
     private final RefreshTokenRepository refreshTokenRepository;
     private final TokenBlacklistRepository tokenBlacklistRepository;
+
+    public TokenCleanupService(RefreshTokenRepository refreshTokenRepository,
+                               TokenBlacklistRepository tokenBlacklistRepository) {
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.tokenBlacklistRepository = tokenBlacklistRepository;
+    }
 
     @Scheduled(cron = "0 0 * * * *") // every hour
     @Transactional
