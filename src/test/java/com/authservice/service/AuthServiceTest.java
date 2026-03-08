@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -68,7 +69,7 @@ class AuthServiceTest {
                 .enabled(true)
                 .locked(false)
                 .failedAttempts(0)
-                .roles(Set.of(userRole()))
+                .roles(new HashSet<>(Set.of(userRole())))
                 .build();
     }
 
@@ -173,9 +174,8 @@ class AuthServiceTest {
             User user = User.builder()
                     .id(UUID.randomUUID()).username("u").email("test@example.com")
                     .password("hashed").enabled(false).locked(false).failedAttempts(0)
-                    .roles(Set.of(userRole())).build();
+                    .roles(new HashSet<>(Set.of(userRole()))).build();
             given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
-            given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
 
             LoginRequest req = new LoginRequest();
             req.setUsernameOrEmail("test@example.com");
@@ -193,7 +193,7 @@ class AuthServiceTest {
                     .id(UUID.randomUUID()).username("u").email("test@example.com")
                     .password("hashed").enabled(true)
                     .locked(true).lockedUntil(Instant.now().plusSeconds(600))
-                    .failedAttempts(5).roles(Set.of(userRole())).build();
+                    .failedAttempts(5).roles(new HashSet<>(Set.of(userRole()))).build();
             given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
 
             LoginRequest req = new LoginRequest();
@@ -227,7 +227,7 @@ class AuthServiceTest {
                     .id(UUID.randomUUID()).username("u").email("test@example.com")
                     .password("hashed").enabled(true).locked(false).failedAttempts(0)
                     .mfaEnabled(true).mfaSecret("SECRET")
-                    .roles(Set.of(userRole())).build();
+                    .roles(new HashSet<>(Set.of(userRole()))).build();
             given(userRepository.findByEmail(anyString())).willReturn(Optional.of(user));
             given(passwordEncoder.matches(anyString(), anyString())).willReturn(true);
 
@@ -323,7 +323,7 @@ class AuthServiceTest {
                     .password("hashed").enabled(false).locked(false).failedAttempts(0)
                     .verificationToken("tok123")
                     .verificationTokenExpires(Instant.now().plusSeconds(3600))
-                    .roles(Set.of(userRole())).build();
+                    .roles(new HashSet<>(Set.of(userRole()))).build();
             given(userRepository.findByVerificationToken("tok123")).willReturn(Optional.of(user));
             given(userRepository.save(any())).willAnswer(inv -> inv.getArgument(0));
 
@@ -342,7 +342,7 @@ class AuthServiceTest {
                     .password("hashed").enabled(false).locked(false).failedAttempts(0)
                     .verificationToken("expired-tok")
                     .verificationTokenExpires(Instant.now().minusSeconds(1))
-                    .roles(Set.of(userRole())).build();
+                    .roles(new HashSet<>(Set.of(userRole()))).build();
             given(userRepository.findByVerificationToken("expired-tok")).willReturn(Optional.of(user));
 
             assertThatThrownBy(() -> authService.verifyEmail("expired-tok"))

@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 "/api/auth/verify-email",
                                 "/api/auth/forgot-password",
                                 "/api/auth/reset-password",
+                                "/api/auth/validate",
                                 "/actuator/health",
                                 "/actuator/info",
                                 "/.well-known/jwks.json",

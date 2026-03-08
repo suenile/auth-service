@@ -83,12 +83,11 @@ class AuthControllerIntegrationTest {
                         .content(toJson(validRegisterRequest(username, email))))
                 .andExpect(status().isCreated());
 
-        userRepository.findByEmail(email).ifPresent(user -> {
-            user.setEnabled(true);
-            user.setEmailVerified(true);
-            user.setVerificationToken(null);
-            userRepository.save(user);
-        });
+        User user = userRepository.findByEmail(email).orElseThrow();
+        user.setEnabled(true);
+        user.setEmailVerified(true);
+        user.setVerificationToken(null);
+        userRepository.save(user);
     }
 
     // ==================== REGISTER ====================

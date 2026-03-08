@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -51,7 +52,7 @@ class JwtServiceTest {
                 .email("test@example.com")
                 .password("hashed")
                 .enabled(true)
-                .roles(Set.of(role))
+                .roles(new HashSet<>(Set.of(role)))
                 .build();
     }
 
