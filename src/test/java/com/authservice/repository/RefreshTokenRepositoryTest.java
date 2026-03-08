@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -33,7 +34,7 @@ class RefreshTokenRepositoryTest {
         Role role = roleRepository.save(Role.builder().name("ROLE_USER").build());
         user = userRepository.save(User.builder()
                 .username("testuser").email("test@example.com")
-                .password("hashed").enabled(true).roles(Set.of(role)).build());
+                .password("hashed").enabled(true).roles(new HashSet<>(Set.of(role))).build());
     }
 
     private RefreshToken save(String token, boolean revoked, Instant expiresAt) {

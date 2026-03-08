@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ class UserRepositoryTest {
                 .email(email)
                 .password("hashed")
                 .enabled(true)
-                .roles(Set.of(userRole))
+                .roles(new HashSet<>(Set.of(userRole)))
                 .build());
     }
 
@@ -122,7 +123,7 @@ class UserRepositoryTest {
         User user = User.builder()
                 .username("grace").email("grace@example.com").password("hashed")
                 .enabled(false).verificationToken("abc-token")
-                .roles(Set.of(userRole)).build();
+                .roles(new HashSet<>(Set.of(userRole))).build();
         userRepository.save(user);
 
         assertThat(userRepository.findByVerificationToken("abc-token")).isPresent();

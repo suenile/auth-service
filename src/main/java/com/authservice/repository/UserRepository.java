@@ -24,11 +24,11 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     boolean existsByUsername(String username);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE User u SET u.failedAttempts = u.failedAttempts + 1 WHERE u.id = :id")
     void incrementFailedAttempts(UUID id);
 
-    @Modifying
+    @Modifying(clearAutomatically = true)
     @Query("UPDATE User u SET u.failedAttempts = 0, u.locked = false, u.lockedUntil = null WHERE u.id = :id")
     void resetFailedAttempts(UUID id);
 }

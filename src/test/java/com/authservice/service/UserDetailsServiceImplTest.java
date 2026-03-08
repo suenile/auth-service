@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -38,7 +39,7 @@ class UserDetailsServiceImplTest {
                 .password("hashed")
                 .enabled(enabled)
                 .locked(locked)
-                .roles(Set.of(role))
+                .roles(new HashSet<>(Set.of(role)))
                 .build();
     }
 
