@@ -3,15 +3,14 @@ package com.authservice.service;
 import com.warrenstrange.googleauth.GoogleAuthenticator;
 import com.warrenstrange.googleauth.GoogleAuthenticatorKey;
 import com.warrenstrange.googleauth.GoogleAuthenticatorQRGenerator;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class MfaService {
 
+    private static final Logger log = LoggerFactory.getLogger(MfaService.class);
     private final GoogleAuthenticator googleAuthenticator = new GoogleAuthenticator();
 
     public String generateSecret() {

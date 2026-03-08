@@ -9,8 +9,8 @@ import com.authservice.exception.AuthException;
 import com.authservice.repository.RefreshTokenRepository;
 import com.authservice.repository.RoleRepository;
 import com.authservice.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,11 +22,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -35,6 +34,20 @@ public class AuthService {
     private final EmailService emailService;
     private final AuditLogService auditLogService;
     private final PasswordEncoder passwordEncoder;
+
+    public AuthService(UserRepository userRepository, RoleRepository roleRepository,
+                       RefreshTokenRepository refreshTokenRepository, JwtService jwtService,
+                       MfaService mfaService, EmailService emailService,
+                       AuditLogService auditLogService, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.refreshTokenRepository = refreshTokenRepository;
+        this.jwtService = jwtService;
+        this.mfaService = mfaService;
+        this.emailService = emailService;
+        this.auditLogService = auditLogService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Value("${jwt.refresh-token-expiration}")
     private long refreshTokenExpiration;
