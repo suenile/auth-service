@@ -10,6 +10,9 @@ keystore.p12
 *.p12
 *.jks
 
+# VS Code workspace settings (keep local only)
+.vscode/
+
 # Environment files with real credentials – keep only the .example templates
 .env
 .env.dev

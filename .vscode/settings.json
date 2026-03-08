@@ -1,7 +1,0 @@
-{
-    "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "automatic",
-    "chat.tools.terminal.autoApprove": {
-        "/Users/suenile/.maven/maven-3.9.13/bin/mvn": true
-    }
-}
