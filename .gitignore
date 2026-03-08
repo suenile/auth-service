@@ -13,6 +13,9 @@ keystore.p12
 # VS Code workspace settings (keep local only)
 .vscode/
 
+# Java upgrade documentation (keep local only)
+.github/
+
 # Environment files with real credentials – keep only the .example templates
 .env
 .env.dev
