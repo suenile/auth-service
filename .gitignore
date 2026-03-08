@@ -21,8 +21,4 @@ keystore.p12
 .env.dev
 .env.uat
 .env.prod
-
-# Keep example templates
-!.env.dev.example
-!.env.uat.example
-!.env.prod.example
+.env*.example
