@@ -159,7 +159,3 @@ mvn test
 MIT License
 
 ------------------------------------------------------------------------
-
-# Development
--   Create the project in a way that it includes all environments, DEV, UAT and PROD.
--   Add unit test and integration test using Spring Test
